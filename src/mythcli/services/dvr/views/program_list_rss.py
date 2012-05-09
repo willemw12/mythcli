@@ -1,8 +1,10 @@
+## - * -  c o d i n g : UTF-8 - * -
+
 import codecs
 import sys
 
 def rss(rss_model_dict):
-    """ Generate RSS 2.0 """
+    """ Generate RSS 2.0 from a program_list model. """
     
     # Print in UTF-8
     sys.stdout = codecs.getwriter("UTF-8")(sys.stdout)
@@ -24,7 +26,20 @@ def rss(rss_model_dict):
 """    <item>
       <title><![CDATA[%(title)s]]></title>
       <link>%(link)s</link>
-      <description><![CDATA[%(description)s]]></description>
+      <description>
+        <![CDATA[
+          <table>""" \
+            % rss_item_model_dict
+
+        #print "      <description><![CDATA[%(description)s]]></description>"
+        entries_list = rss_item_model_dict["description_entries"]
+        for entry in entries_list:
+            print """            <tr><td align="right" valign="top" style="white-space: nowrap">%s:</td><td>%s</td></tr>""" % (entry[0], entry[1])
+
+        print \
+"""         </table>
+        ]]>
+      </description>
       <guid isPermaLink="false">%(guid)s</guid>
       <pubDate>%(created_on)s</pubDate>
     </item>""" \

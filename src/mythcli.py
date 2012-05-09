@@ -5,12 +5,16 @@ import argparse
 from mythcli.services.dvr.controllers import expiring, recorded, upcoming
 
 def main():
+    """ For all datetime format codes, see http://docs.python.org/library/datetime.html#strftime-and-strptime-behavior """
+    
     # Create top-level parser
     parser = argparse.ArgumentParser(description="MythTV Services API command-line interface.")
-    #parser.add_argument("-d", "--debug", action="store_const", const=True, default=False, help="set log level to debug")
-    #parser.add_argument("-q", "--quiet", action="store_const", const=True, default=False, help="set log level to fatal")
-    #parser.add_argument("-v", "--verbose", action="store_const", const=True, default=False, help="set log level to info")    
-    parser.add_argument("--max-items", type=int, nargs=1, help="limit number of requested items. Default: no limit (0)")
+    #parser.add_argument("--debug", action="store_const", const=True, default=False, help="set log level to debug")
+    #parser.add_argument("--quiet", action="store_const", const=True, default=False, help="set log level to fatal")
+    #parser.add_argument("--verbose", action="store_const", const=True, default=False, help="set log level to info")
+    parser.add_argument("-d", "--date-format", nargs=1, default=["%a %d %B, %Y"], help='examples: "%%Y-%%m-%%d", "%%a %%d %%B, %%Y", "%%x"')
+    parser.add_argument("-m", "--max-items", type=int, nargs=1, help="limit number of requested items. Default: no limit (0)")
+    parser.add_argument("-t", "--time-format", nargs=1, default=["%H:%M"], help='examples: "%%H:%%M", "%%I:%%M %%p", "%%X"')
     #parser.add_argument("--version", action="store_const", const=True, default=False, help="print version")    
 
     # Register subcommands

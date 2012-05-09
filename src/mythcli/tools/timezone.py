@@ -1,16 +1,5 @@
 from datetime import tzinfo, timedelta, datetime
 
-def strflocaltime(datetime, stringformat):
-    """ Return formatted local time string. @stringformat: format string or None """
-    utcoffset_td = local.utcoffset(datetime)
-    if stringformat:
-        string = (datetime + utcoffset_td).strftime(stringformat)
-    else:
-        string = str(datetime + utcoffset_td)
-    return string
-
-####
-
 ZERO = timedelta(0)
 HOUR = timedelta(hours=1)
 
@@ -89,3 +78,14 @@ class LocalTimezone(tzinfo):
         return tt.tm_isdst > 0
 
 local = LocalTimezone()
+
+####
+
+def strflocaltime(datetime, stringformat):
+    """ Return formatted local time string. @stringformat: format string or None. """
+    utcoffset_td = local.utcoffset(datetime)
+    if stringformat:
+        string = (datetime + utcoffset_td).strftime(stringformat)
+    else:
+        string = str(datetime + utcoffset_td)
+    return string
