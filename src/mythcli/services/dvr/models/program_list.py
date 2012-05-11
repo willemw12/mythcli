@@ -110,12 +110,15 @@ def _rss_item(args, program):
     
 def _rss_items(args):
     url = args.url
+
     #NOTE max() evens works when one of the the values is None (None is ignored)
-    max_items_list = getattr(args, "max_items", None)
-    if max_items_list:
-        max_items = max(max_items_list[0], 0)
-    else:
-        max_items = MAX_ITEMS
+    max_items = max(args.max_items[0], 0)
+    #ALTERNATIVE when args.max_items has no default value
+    #max_items_list = getattr(args, "max_items", None)
+    #if max_items_list:
+    #    max_items = max(max_items_list[0], 0)
+    #else:
+    #    max_items = MAX_ITEMS
 
     model_dict_list = []
     tree = ElementTree()

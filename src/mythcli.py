@@ -13,7 +13,7 @@ def main():
     #parser.add_argument("--quiet", action="store_const", const=True, default=False, help="set log level to fatal")
     #parser.add_argument("--verbose", action="store_const", const=True, default=False, help="set log level to info")
     parser.add_argument("-d", "--date-format", nargs=1, default=["%a %d %B, %Y"], help='examples: "%%Y-%%m-%%d", "%%a %%d %%B, %%Y", "%%x"')
-    parser.add_argument("-m", "--max-items", type=int, nargs=1, help="limit number of requested items. Default: no limit (0)")
+    parser.add_argument("-m", "--max-items", type=int, nargs=1, default=[0], help="limit number of requested items. Default: no limit (0)")
     parser.add_argument("-t", "--time-format", nargs=1, default=["%H:%M"], help='examples: "%%H:%%M", "%%I:%%M %%p", "%%X"')
     #parser.add_argument("--version", action="store_const", const=True, default=False, help="print version")    
 
