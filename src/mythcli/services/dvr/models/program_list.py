@@ -47,8 +47,8 @@ def _rss_item_description_entries(args, program):
 
     # Record length in hours and minutes
     record_length_td = rec_end_dt - rec_start_dt
-    record_length_mins = record_length_td.seconds / 60
-    record_length = "{0:2}".format(record_length_mins / 60) + ":" + \
+    record_length_mins = record_length_td.seconds // 60
+    record_length = "{0:2}".format(record_length_mins // 60) + ":" + \
                     "{0:02}".format(record_length_mins % 60) + ":00"
     
 #    #summary = """
