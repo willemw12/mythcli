@@ -1,18 +1,16 @@
 """ RSS feed centric model. """
-## - * -  c o d i n g : UTF-8 - * -
 
-import urllib2
-import urlparse
+import urllib.request   #, urllib.error, urllib.parse
 
 from datetime import datetime
 # RFC-2822 formatted datetime
 from email import utils
 from xml.etree.ElementTree import ElementTree
 
-from mythcli import MYTHTV_DATETIME_FORMAT
+from mythcli import MYTHTV_SERVICES_DATETIME_FORMAT
 from mythcli.tools import timezone
 
-LIMIT_ITEMS = 100
+LIMIT_ITEMS = 50
 
 # Fallback value. No limit if 0
 MAX_ITEMS = 0
@@ -38,10 +36,10 @@ def _rss_item_description_entries(args, program):
     
     channel = channel_number + " - " + channel_callsign
     
-    starttime_dt = datetime.strptime(starttime, MYTHTV_DATETIME_FORMAT)
-    endtime_dt = datetime.strptime(endtime, MYTHTV_DATETIME_FORMAT)
-    rec_start_dt = datetime.strptime(recording_starttime, MYTHTV_DATETIME_FORMAT)
-    rec_end_dt = datetime.strptime(recording_endtime, MYTHTV_DATETIME_FORMAT)
+    starttime_dt = datetime.strptime(starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
+    endtime_dt = datetime.strptime(endtime, MYTHTV_SERVICES_DATETIME_FORMAT)
+    rec_start_dt = datetime.strptime(recording_starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
+    rec_end_dt = datetime.strptime(recording_endtime, MYTHTV_SERVICES_DATETIME_FORMAT)
     
     air_date = timezone.strflocaltime(starttime_dt, args.date_format[0])
     air_time = timezone.strflocaltime(starttime_dt, args.time_format[0]) + " - " + \
@@ -53,7 +51,7 @@ def _rss_item_description_entries(args, program):
     record_length = "{0:2}".format(record_length_mins / 60) + ":" + \
                     "{0:02}".format(record_length_mins % 60) + ":00"
     
-#    #summary = u"""
+#    #summary = """
 #    summary = """Title:         %(title)s
 #Channel:       %(channel)s
 #Airdate:       %(air_date)s
@@ -85,16 +83,16 @@ def _rss_item(args, program):
 
     # Replace template's item link hostname with mythbackend's hostname
     #urlsplit(), urlunsplit()
-    hostname = urlparse.urlparse(args.url).hostname
-    result = urlparse.urlparse(args.item_link)
-    parts = urlparse.ParseResult(result.scheme, hostname, result.path, result.params, result.query, result.fragment)
-    link = urlparse.urlunparse(parts)
+    hostname = urllib.parse.urlparse(args.url).hostname
+    result = urllib.parse.urlparse(args.item_link)
+    parts = urllib.parse.ParseResult(result.scheme, hostname, result.path, result.params, result.query, result.fragment)
+    link = urllib.parse.urlunparse(parts)
     
     #description = _rss_item_description(args, program)
     description_entries = _rss_item_description_entries(args, program)
 
     starttime = program.findtext("StartTime")
-    starttime_dt = datetime.strptime(starttime, MYTHTV_DATETIME_FORMAT)
+    starttime_dt = datetime.strptime(starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
     guid = channel_id + "-" + starttime_dt.strftime("%Y%m%d%H%M%S")
 
     # Use web2py naming convention
@@ -122,7 +120,7 @@ def _rss_items(args):
 
     model_dict_list = []
     tree = ElementTree()
-    tree.parse(urllib2.urlopen(url))
+    tree.parse(urllib.request.urlopen(url))
     programs = tree.findall("Programs/Program")
     if programs is not None:
         for i, program in enumerate(programs):

@@ -1,7 +1,9 @@
 *~
+*.bak
 *.log
 *.pyc
 .*.swp
 
+__pycache__/
 tmp/
 
