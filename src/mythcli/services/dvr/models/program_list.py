@@ -1,6 +1,7 @@
 """ RSS feed centric model. """
 
-import urllib.request   #, urllib.error, urllib.parse
+import sys
+import urllib.request, urllib.error, urllib.parse
 
 from datetime import datetime
 # RFC-2822 formatted datetime
@@ -120,7 +121,13 @@ def _rss_items(args):
 
     model_dict_list = []
     tree = ElementTree()
-    tree.parse(urllib.request.urlopen(url))
+    try:
+        tree.parse(urllib.request.urlopen(url))
+    except urllib.error.URLError as exc:
+        sys.stderr.write("URL %s not known\n" % url)
+        #sys.stderr.write("%s\n" % exc.reason)
+        sys.exit(exc.reason.errno)
+
     programs = tree.findall("Programs/Program")
     if programs is not None:
         for i, program in enumerate(programs):
