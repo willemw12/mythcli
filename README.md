@@ -29,7 +29,7 @@ Optionally, if Python 3 is the default, create a symbolic link of mythcli.py to 
 
     ln -s $(pwd)/src/mythcli.py ~/bin/mythcli.py
 
-To update, for example, an RSS feed of upcoming MythTV recordings once a day, create a similar cron job listed below. All arguments are optional:
+To update, for example, an RSS feed of upcoming MythTV recordings once a day on your local web server, create a similar cron job listed below. All arguments are optional:
 
     # m h  dom mon dow   command
     00  0  *   *   *     mythcli.py --date-format "%a %B %d, %Y" --time-format "%I:%M %p" upcoming --link http://www.example.com/mythcli/dvr/upcoming.xml --url http://mythbackend:6544/Dvr/GetUpcomingList?ShowAll=false > /var/www/mythcli/dvr/upcoming.xml
