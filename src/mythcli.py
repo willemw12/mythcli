@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 
-from mythcli.services.dvr.controllers import expiring, recorded, upcoming
+from mythcli.services.dvr.controllers import conflicting, expiring, recorded, upcoming
 
 def main():
     """ For all datetime format codes, see http://docs.python.org/library/datetime.html#strftime-and-strptime-behavior """
@@ -20,6 +20,7 @@ def main():
     # Register subcommands
     #subparsers = parser.add_subparsers(title="subcommands", description="<valid subcommands>", help="<additional help>")
     subparsers = parser.add_subparsers(title="subcommands")
+    conflicting.add_subparser(subparsers)
     expiring.add_subparser(subparsers)
     recorded.add_subparser(subparsers)
     upcoming.add_subparser(subparsers)
