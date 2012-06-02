@@ -15,5 +15,5 @@ def add_subparser(subparsers):
     parser.set_defaults(func=run, item_link=TEMPLATE_ITEM_LINK)
 
 def run(args):
-    model_dict = program_list.rss(args)
-    program_list_rss.rss(model_dict)
+    model_dict = program_list.ProgramList(args).model()
+    program_list_rss.feed(model_dict)

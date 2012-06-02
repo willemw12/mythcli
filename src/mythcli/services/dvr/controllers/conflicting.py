@@ -1,5 +1,5 @@
-from mythcli.services.dvr.models import program_list
-from mythcli.services.dvr.views import program_list_rss
+from mythcli.services.dvr.models import conflicting_program_list
+from mythcli.services.dvr.views import conflicting_program_list_rss
 
 DEFAULT_RSS_CHANNEL_LINK = "http://localhost/mythcli/dvr/conflicting.xml"
 DEFAULT_RSS_CHANNEL_TITLE = "MythTV - Conflicting Recordings"
@@ -15,5 +15,8 @@ def add_subparser(subparsers):
     parser.set_defaults(func=run, item_link=TEMPLATE_ITEM_LINK)
 
 def run(args):
-    model_dict = program_list.rss(args)
-    program_list_rss.rss(model_dict)
+    #if args.detailed:
+    model_dict = conflicting_program_list.ConflictingProgramList(args).model()
+    #else:
+    #    model_dict = program_list.ProgramList(args).model()
+    conflicting_program_list_rss.feed(model_dict)
