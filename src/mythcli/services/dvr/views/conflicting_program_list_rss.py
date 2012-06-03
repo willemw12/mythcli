@@ -42,8 +42,8 @@ def feed(rss_model_dict):
         #### Section with additional code, compared to program_list_rss.py
         
         descriptions_list = description_dict["program_descriptions_conflicting_with"]
-        if descriptions_list != []:
-            print("         <br/>\n         Conflicts with upcoming recording%s\n         <br/><br/>" % ("s" if len(descriptions_list) > 1 else ""))
+        if descriptions_list is not None and descriptions_list != []:
+            print("         <br/>\n         Conflicts with upcoming recording%s:\n         <br/><br/>" % ("s" if len(descriptions_list) > 1 else ""))
             for i, description_list in enumerate(descriptions_list):
                 print("         <table>")
                 for entry in description_list:

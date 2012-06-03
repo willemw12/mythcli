@@ -7,7 +7,7 @@ Mythcli is a partially implemented command-line interface of the MytTV Services 
 Features
 --------
 
-Mythcli runs in Python 3 (3.2). Mythcli v0.1 runs in Python 2 (2.7).
+Mythcli runs on Python 3 (3.2 or higher).
 
 It contains only a few MythTV DVR get requests and returns the response in RSS 2.0 format.
 
@@ -37,4 +37,4 @@ To update, for example, an RSS feed of upcoming MythTV recordings once a day on 
 Or to get notified in an RSS feed about programs that won't be recorded because of a conflict:
 
     # m h  dom mon dow   command
-    00  0  *   *   *     mythcli conflicting --link http://www.example.com/mythcli/dvr/conflicting.xml --url http://mythbackend:6544/Dvr/GetConflictList > /var/www/mythcli/dvr/conflicting.xml
+    00  0  *   *   *     mythcli conflicting --conflicting-with --link http://www.example.com/mythcli/dvr/conflicting.xml --url http://mythbackend:6544/Dvr/GetConflictList > /var/www/mythcli/dvr/conflicting.xml

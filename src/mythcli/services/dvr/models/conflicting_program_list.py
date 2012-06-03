@@ -26,8 +26,11 @@ class ConflictingProgramList(program_list.ProgramList):
         
         item_dict = super(ConflictingProgramList, self).__item__(args, program)
 
-        descriptions_list = self.__program_descriptions_conflicting_with__(args, program)
         description_dict = item_dict["description"]
+        if args.conflicting_with:
+            descriptions_list = self.__program_descriptions_conflicting_with__(args, program)
+        else:
+            descriptions_list = None
         description_dict["program_descriptions_conflicting_with"] = descriptions_list
         
         return item_dict
@@ -36,7 +39,7 @@ class ConflictingProgramList(program_list.ProgramList):
     #    return super(ProgramConflictList, self).__program_description__(args, program)
 
     def __program_descriptions_conflicting_with__(self, args, program):
-        """ Return description list of programs that are in conflict with @program. """
+        """ Return description list of upcoming programs that are in conflict with @program. """
 
         # Find recordings which overlap with @program recording times
 
