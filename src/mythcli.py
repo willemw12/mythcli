@@ -6,15 +6,19 @@ from mythcli.services.dvr.controllers import conflicting, expiring, recorded, up
 
 def main():
     """ For all datetime format codes, see http://docs.python.org/library/datetime.html#strftime-and-strptime-behavior """
-    
+
+    #NOTE remove leading zero in day: "%-d" or "%e". This may not be portable.
+
     # Create top-level parser
     parser = argparse.ArgumentParser(description="MythTV Services API command-line interface.")
-    #parser.add_argument("--debug", action="store_const", const=True, default=False, help="set log level to debug")
-    #parser.add_argument("--quiet", action="store_const", const=True, default=False, help="set log level to fatal")
-    #parser.add_argument("--verbose", action="store_const", const=True, default=False, help="set log level to info")
     parser.add_argument("-d", "--date-format", nargs=1, default=["%a %d %B, %Y"], help='examples: "%%Y-%%m-%%d", "%%a %%d %%B, %%Y", "%%x"')
     parser.add_argument("-m", "--max-items", type=int, nargs=1, default=[0], help="limit number of requested items. Default: no limit (0)")
     parser.add_argument("-t", "--time-format", nargs=1, default=["%H:%M"], help='examples: "%%H:%%M", "%%I:%%M %%p", "%%X"')
+    #parser.add_argument("--debug", action="store_const", const=True, default=False, help="set log level to debug")
+    #parser.add_argument("--quiet", action="store_const", const=True, default=False, help="set log level to fatal")
+    parser.add_argument("--short-desc", action="store_const", const=True, default=False, help="list short descriptions")
+    parser.add_argument("--title-desc", action="store_const", const=True, default=False, help="list titles")
+    #parser.add_argument("--verbose", action="store_const", const=True, default=False, help="set log level to info")
     #parser.add_argument("--version", action="store_const", const=True, default=False, help="print version")    
 
     # Register subcommands

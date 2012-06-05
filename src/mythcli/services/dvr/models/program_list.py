@@ -90,13 +90,12 @@ class ProgramList:
         guid = channel_id + "-" + starttime_dt.strftime("%Y%m%d%H%M%S")
     
         # Use web2py naming convention
-        item_dict = dict(
-                        title=title,
-                        link=link,
-                        #description={ "program_description": description_list },
-                        description=dict(program_description=description_list),
-                        guid=guid,
-                        created_on=utils.formatdate())
+        item_dict = dict(title=title,
+                         link=link,
+                         #description={ "program_description": description_list },
+                         description=dict(program_description=description_list),
+                         guid=guid,
+                         created_on=utils.formatdate())
     
         return item_dict
         
@@ -122,17 +121,30 @@ class ProgramList:
         if subtitle:
             title += " - " + subtitle
         
+        if args.title_desc:
+            # Return description with only the title
+            description_list = [["Title", title]]
+            return description_list
+        
         channel = channel_number + " - " + channel_callsign
         
         starttime_dt = datetime.strptime(starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
         endtime_dt = datetime.strptime(endtime, MYTHTV_SERVICES_DATETIME_FORMAT)
-        rec_start_dt = datetime.strptime(recording_starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
-        rec_end_dt = datetime.strptime(recording_endtime, MYTHTV_SERVICES_DATETIME_FORMAT)
-        
         air_date = timezone.strflocaltime(starttime_dt, args.date_format[0])
         air_time = timezone.strflocaltime(starttime_dt, args.time_format[0]) + " - " + \
                    timezone.strflocaltime(endtime_dt, args.time_format[0])
-    
+
+        if args.short_desc:
+            # Return short description
+            description_list = [["Title", title],
+                                ["Channel", channel],
+                                ["Airdate", air_date],
+                                ["Airtime", air_time]]
+            return description_list
+        
+        rec_start_dt = datetime.strptime(recording_starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
+        rec_end_dt = datetime.strptime(recording_endtime, MYTHTV_SERVICES_DATETIME_FORMAT)
+        
         # Record length in hours and minutes
         recording_length_td = rec_end_dt - rec_start_dt
         recording_length_mins = recording_length_td.seconds // 60

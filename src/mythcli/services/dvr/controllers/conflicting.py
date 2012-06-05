@@ -12,12 +12,12 @@ def add_subparser(subparsers):
     parser.add_argument("-t", "--title", default=DEFAULT_RSS_CHANNEL_TITLE, help="RSS feed title")
     parser.add_argument("-u", "--url", default=DEFAULT_SERVICE_REQUEST_URL, help="MythTV DVR GetExpiringList URL request. Default: request all from localhost")
     parser.add_argument("--conflicting-with", action="store_const", const=True, default=False, help="list upcoming recordings that are in conflict with the listed recording")
+    parser.add_argument("--short-desc", dest="subparser_short_desc", action="store_const", const=True, default=False, help="list short descriptions")
+    parser.add_argument("--title-desc", dest="subparser_title_desc", action="store_const", const=True, default=False, help="list titles")
+    
     # Set function to be called when this subparser is selected
     parser.set_defaults(func=run, item_link=TEMPLATE_ITEM_LINK)
-
+    
 def run(args):
-    #if args.detailed:
     model_dict = conflicting_program_list.ConflictingProgramList(args).model()
-    #else:
-    #    model_dict = program_list.ProgramList(args).model()
     conflicting_program_list_rss.feed(model_dict)

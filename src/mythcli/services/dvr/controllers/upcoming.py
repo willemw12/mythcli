@@ -11,6 +11,7 @@ def add_subparser(subparsers):
     parser.add_argument("-l", "--link", default=DEFAULT_RSS_CHANNEL_LINK, help="RSS feed link. Default: " + DEFAULT_RSS_CHANNEL_LINK)
     parser.add_argument("-t", "--title", default=DEFAULT_RSS_CHANNEL_TITLE, help="RSS feed title")
     parser.add_argument("-u", "--url", default=DEFAULT_SERVICE_REQUEST_URL, help="MythTV DVR GetUpcomingList URL request. Default: request from localhost; excluding conflicts, previously recorded, etc.")
+    
     # Set function to be called when this subparser is selected
     parser.set_defaults(func=run, item_link=TEMPLATE_ITEM_LINK)
 

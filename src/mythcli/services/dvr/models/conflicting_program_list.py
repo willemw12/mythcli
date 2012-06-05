@@ -93,8 +93,14 @@ class ConflictingProgramList(program_list.ProgramList):
                 rec_end = time.mktime(datetime.strptime(program.findtext("Recording/EndTs"), MYTHTV_SERVICES_DATETIME_FORMAT).timetuple())
                 upcoming_recording_time_range = (rec_start, rec_end)
                 if time_range_overlapping(upcoming_recording_time_range, recording_time_range):
+                    s = args.subparser_short_desc
+                    args.short_desc = args.subparser_short_desc
+                    t = args.subparser_title_desc
+                    args.title_desc = args.subparser_title_desc
                     descriptions_list.append(super(ConflictingProgramList, self).__program_description__(args, program))
-                
+                    args.short_desc = s
+                    args.title_desc = t
+                    
         return descriptions_list
 
 ####
