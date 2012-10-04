@@ -1,7 +1,7 @@
 mythcli
 =======
 
-Mythcli is a partially implemented command-line interface of the MytTV Services API.
+Mythcli is a partially implemented command-line interface of the MythTV Services API.
 
 
 Features

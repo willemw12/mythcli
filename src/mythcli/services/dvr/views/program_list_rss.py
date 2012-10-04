@@ -2,6 +2,8 @@
 #import codecs
 #import sys
 
+#NOTE in general, <string>.format() is the preferred method to format a string
+
 def feed(rss_model_dict):
     """ Generate RSS 2.0 from a program_list model. """
     
