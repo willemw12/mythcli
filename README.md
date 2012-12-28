@@ -1,15 +1,13 @@
 mythcli
 =======
 
-Mythcli is a partially implemented command-line interface of the MythTV Services API.
+Mythcli is a Python program to generate MythTV RSS feeds, for example of upcoming or conflicting recordings.
 
 
 Features
 --------
 
-Mythcli runs on Python 3 (3.2 or higher).
-
-It contains only a few MythTV DVR get requests and returns the response in RSS 2.0 format.
+Mythcli is a partially implemented command-line interface of the MythTV Services API (MythTV versions .25 and higher). It supports only a few MythTV DVR Service requests and returns the response in RSS 2.0 format. Mythcli runs on Python 3 (3.2 or higher).
 
 To view the available mythcli commands and options, run:
 
