@@ -27,12 +27,11 @@ class ProgramList:
         date = utils.formatdate()
     
         # Use web2py naming convention
-        self.model_dict = dict(
-                                title=args.title,
-                                link=args.link,
-                                pub_date=date,
-                                created_on=date,
-                                entries=self.__items__(args))
+        self.model_dict = dict(title=args.feed_title,
+                               link=args.feed_url,
+                               pub_date=date,
+                               created_on=date,
+                               entries=self.__items__(args))
 
     def model(self):        
         """ Return RSS data in a dictionary/list tree. """
@@ -42,12 +41,12 @@ class ProgramList:
     def __items__(self, args):
         """ Return RSS items dictionary. """
 
-        url = args.url
+        service_url = args.service_url
         tree = ElementTree()
         try:
-            tree.parse(urllib.request.urlopen(url))
+            tree.parse(urllib.request.urlopen(service_url))
         except urllib.error.URLError as exc:
-            sys.stderr.write("URL %s not known\n" % url)
+            sys.stderr.write("URL %s not known\n" % service_url)
             #sys.stderr.write("%s\n" % exc.reason)
             sys.exit(exc.reason.errno)
     
@@ -59,30 +58,39 @@ class ProgramList:
         #    max_items = max(max_items_list[0], 0)
         #else:
         #    max_items = MAX_ITEMS
+
+        link = None
+        if not args.no_feed_item_links:
+            #urlsplit(), urlunsplit()
+            if args.mythweb_base_url is not None:
+                item_link = args.mythweb_base_url + "/" + args.item_rel_link
+                netloc = urllib.parse.urlparse(args.mythweb_base_url).netloc
+            else:
+                # Assume default values. Assume the MythWeb hostname is the same as the RSS feed hostname
+                item_link = args.item_base_link + "/" + args.item_rel_link
+                netloc = urllib.parse.urlparse(args.feed_url).netloc
     
+            # Replace item link's hostname:port (netloc)
+            result = urllib.parse.urlparse(item_link)
+            parts = urllib.parse.ParseResult(result.scheme, netloc, result.path, result.params, result.query, result.fragment)
+            link = urllib.parse.urlunparse(parts)
+        
         item_dict_list = []
         programs = tree.findall("Programs/Program")
         if programs is not None:
             for i, program in enumerate(programs):
                 if (max_items > 0 and i == max_items) or i == LIMIT_ITEMS:
                     break
-                item_dict_list.append(self.__item__(args, program))
+                item_dict_list.append(self.__item__(args, program, link))
                 
         return item_dict_list
 
-    def __item__(self, args, program):
+    def __item__(self, args, program, link):
         """ Return RSS item dictionary. """
     
         title = program.findtext("Title")
         channel_id = program.findtext("Channel/ChanId")
 
-        # Replace template's item link hostname with mythbackend's hostname and remove the port number
-        #urlsplit(), urlunsplit()
-        hostname = urllib.parse.urlparse(args.url).hostname
-        result = urllib.parse.urlparse(args.item_link)
-        parts = urllib.parse.ParseResult(result.scheme, hostname, result.path, result.params, result.query, result.fragment)
-        link = urllib.parse.urlunparse(parts)
-        
         description_list = self.__program_description__(args, program)
     
         starttime = program.findtext("StartTime")

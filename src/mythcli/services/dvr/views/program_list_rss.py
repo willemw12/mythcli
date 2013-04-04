@@ -23,9 +23,13 @@ def feed(rss_model_dict):
     for rss_item_model_dict in rss_model_dict["entries"]:
         #print "      <description><![CDATA[%(description)s]]></description>"
 
-        print("""    <item>
-      <title><![CDATA[%(title)s]]></title>
-      <link>%(link)s</link>
+        print("""    <item>""")
+
+        if rss_item_model_dict["link"] is not None:
+            print("""      <link>%(link)s</link>""" \
+                  % rss_item_model_dict)
+
+        print("""      <title><![CDATA[%(title)s]]></title>
       <description>
         <![CDATA[""" \
             % rss_item_model_dict)

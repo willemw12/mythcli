@@ -21,10 +21,10 @@ class ConflictingProgramList(program_list.ProgramList):
     #def __items__(self, args):
     #    return super(ConflictingProgramList, self).__items__(args)
 
-    def __item__(self, args, program):
+    def __item__(self, args, program, link):
         """ Return RSS item dictionary. """
         
-        item_dict = super(ConflictingProgramList, self).__item__(args, program)
+        item_dict = super(ConflictingProgramList, self).__item__(args, program, link)
 
         description_dict = item_dict["description"]
         if args.conflicting_with:
@@ -48,7 +48,7 @@ class ConflictingProgramList(program_list.ProgramList):
         #     http://localhost:6544/Dvr/GetConflictList
         # into
         #     http://localhost:6544/Dvr/GetUpcomingList?ShowAll=false
-        result = urllib.parse.urlparse(args.url)
+        result = urllib.parse.urlparse(args.service_url)
         parts = urllib.parse.ParseResult(result.scheme, result.netloc, "Dvr/GetUpcomingList", result.params, "ShowAll=false", "")
         url = urllib.parse.urlunparse(parts)
 

@@ -30,9 +30,9 @@ Optionally, create a symbolic link of mythcli.py in a directory of $PATH. From t
 To update, for example, an RSS feed of upcoming MythTV recordings once a day on your local web server, create a similar cron job listed below. All arguments are optional:
 
     # m h  dom mon dow   command
-    00  0  *   *   *     mythcli --date-format "%a %B %d, %Y" --time-format "%I:%M %p" upcoming --link http://www.example.com/mythcli/dvr/upcoming.xml --url http://mythbackend:6544/Dvr/GetUpcomingList?ShowAll=false > /var/www/mythcli/dvr/upcoming.xml
+    00  0  *   *   *     mythcli --date-format "%a %B %d, %Y" --time-format "%I:%M %p" upcoming --feed-url http://www.example.com/mythcli/dvr/upcoming.xml --service-url http://mythbackend:6544/Dvr/GetUpcomingList?ShowAll=false --mythweb-base-url http://mythbackend > /var/www/mythcli/dvr/upcoming.xml
 
-Or to get notified in an RSS feed about programs that won't be recorded because of a conflict:
+Or to get notified in an RSS feed about programs that won't be recorded because of conflicts:
 
     # m h  dom mon dow   command
-    00  0  *   *   *     mythcli conflicting --conflicting-with --link http://www.example.com/mythcli/dvr/conflicting.xml --url http://mythbackend:6544/Dvr/GetConflictList > /var/www/mythcli/dvr/conflicting.xml
+    00  0  *   *   *     mythcli conflicting --conflicting-with --feed-url http://www.example.com/mythcli/dvr/conflicting.xml --service-url http://mythbackend:6544/Dvr/GetConflictList > /var/www/mythcli/dvr/conflicting.xml
