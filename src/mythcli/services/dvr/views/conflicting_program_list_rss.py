@@ -65,7 +65,7 @@ def feed(rss_model_dict):
         print("""       ]]>
       </description>
       <guid isPermaLink="false">%(guid)s</guid>
-      <pubDate>%(created_on)s</pubDate>
+      <pubDate>%(pub_date)s</pubDate>
     </item>""" \
             % rss_item_model_dict)
 

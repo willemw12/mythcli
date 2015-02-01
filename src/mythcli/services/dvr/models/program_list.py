@@ -24,14 +24,29 @@ MAX_ITEMS = 0
 class ProgramList:
 
     def __init__(self, args):
-        date = utils.formatdate()
+        service_url = args.service_url
+        tree = ElementTree()
+        try:
+            tree.parse(urllib.request.urlopen(service_url))
+        except urllib.error.URLError as exc:
+            sys.stderr.write("Unknown URL %s\n" % service_url)
+            #sys.stderr.write("%s\n" % exc.reason)
+            sys.exit(exc.reason.errno)
+
+        pub_date = tree.findtext("AsOf")
+        pub_date_dt = datetime.strptime(pub_date, MYTHTV_SERVICES_DATETIME_FORMAT)
+        pub_date = utils.formatdate(pub_date_dt.timestamp(), localtime=True)
+        
+        created_on = utils.formatdate(localtime=True)
     
         # Use web2py naming convention
         self.model_dict = dict(title=args.feed_title,
                                link=args.feed_url,
-                               pub_date=date,
-                               created_on=date,
-                               entries=self.__items__(args))
+                               description=args.feed_description,
+                               pub_date=pub_date,
+                               created_on=created_on,
+                               language=args.feed_language,
+                               entries=self.__items__(args, tree))
 
     def model(self):        
         """ Return RSS data in a dictionary/list tree. """
@@ -40,15 +55,6 @@ class ProgramList:
     
     def __items__(self, args):
         """ Return RSS items dictionary. """
-
-        service_url = args.service_url
-        tree = ElementTree()
-        try:
-            tree.parse(urllib.request.urlopen(service_url))
-        except urllib.error.URLError as exc:
-            sys.stderr.write("URL %s not known\n" % service_url)
-            #sys.stderr.write("%s\n" % exc.reason)
-            sys.exit(exc.reason.errno)
     
         #NOTE max() evens works when one of the the values is None (None is ignored)
         max_items = max(args.max_items[0], 0)
@@ -96,14 +102,15 @@ class ProgramList:
         starttime = program.findtext("StartTime")
         starttime_dt = datetime.strptime(starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
         guid = channel_id + "-" + starttime_dt.strftime("%Y%m%d%H%M%S")
-    
+        pub_date = utils.formatdate(starttime_dt.timestamp(), localtime=True)
+        
         # Use web2py naming convention
         item_dict = dict(title=title,
                          link=link,
                          #description={ "program_description": description_list },
                          description=dict(program_description=description_list),
                          guid=guid,
-                         created_on=utils.formatdate())
+                         pub_date=pub_date)
     
         return item_dict
         

@@ -25,8 +25,10 @@ def feed(rss_model_dict):
 
         print("""    <item>""")
 
+        #NOTE the 'guid' part is only to make the link unique (to avoid duplicates in the QuiteRSS feed reader)
+        #guid.replace("-", "/")
         if rss_item_model_dict["link"] is not None:
-            print("""      <link>%(link)s</link>""" \
+            print("""      <link>%(link)s/%(guid)s</link>""" \
                   % rss_item_model_dict)
 
         print("""      <title><![CDATA[%(title)s]]></title>
@@ -48,8 +50,8 @@ def feed(rss_model_dict):
         print("""       ]]>
       </description>
       <guid isPermaLink="false">%(guid)s</guid>
-      <pubDate>%(created_on)s</pubDate>
-    </item>""" \
+      <pubDate>%(pub_date)s</pubDate>
+     </item>""" \
             % rss_item_model_dict)
 
     print("""  </channel>
