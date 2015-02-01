@@ -49,15 +49,15 @@ class ProgramList:
                                entries=self.__items__(args, tree))
 
     def model(self):        
-        """ Return RSS data in a dictionary/list tree. """
+        """ Return RSS channel data in a dictionary/list tree. """
 
         return self.model_dict
     
-    def __items__(self, args):
+    def __items__(self, args, tree):
         """ Return RSS items dictionary. """
     
         #NOTE max() evens works when one of the the values is None (None is ignored)
-        max_items = max(args.max_items[0], 0)
+        max_items = max(args.max_items, 0)
         #ALTERNATIVE when args.max_items has no default value
         #max_items_list = getattr(args, "max_items", None)
         #if max_items_list:
@@ -95,6 +95,7 @@ class ProgramList:
         """ Return RSS item dictionary. """
     
         title = program.findtext("Title")
+        sub_title = program.findtext("SubTitle")
         channel_id = program.findtext("Channel/ChanId")
 
         description_list = self.__program_description__(args, program)
@@ -106,6 +107,7 @@ class ProgramList:
         
         # Use web2py naming convention
         item_dict = dict(title=title,
+                         sub_title=sub_title,
                          link=link,
                          #description={ "program_description": description_list },
                          description=dict(program_description=description_list),
@@ -145,16 +147,16 @@ class ProgramList:
         
         starttime_dt = datetime.strptime(starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
         endtime_dt = datetime.strptime(endtime, MYTHTV_SERVICES_DATETIME_FORMAT)
-        air_date = timezone.strflocaltime(starttime_dt, args.date_format[0])
-        air_time = timezone.strflocaltime(starttime_dt, args.time_format[0]) + " - " + \
-                   timezone.strflocaltime(endtime_dt, args.time_format[0])
+        airdate = timezone.strflocaltime(starttime_dt, args.date_format)
+        airtime = timezone.strflocaltime(starttime_dt, args.time_format) + " - " + \
+                   timezone.strflocaltime(endtime_dt, args.time_format)
 
         if args.short_desc:
             # Return short description
             description_list = [["Title", title],
                                 ["Channel", channel],
-                                ["Airdate", air_date],
-                                ["Airtime", air_time]]
+                                ["Airdate", airdate],
+                                ["Airtime", airtime]]
             return description_list
         
         rec_start_dt = datetime.strptime(recording_starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
@@ -171,13 +173,13 @@ class ProgramList:
     #    #summary = """
     #    summary = """Title:         %(title)s
     #Channel:       %(channel)s
-    #Airdate:       %(air_date)s
-    #Airtime:       %(air_time)s
+    #Airdate:       %(airdate)s
+    #Airtime:       %(airtime)s
     #Record Length: %(recording_length)s
     #Category:      %(category)s
     #Description:   %(description)s
     #""" % { "title": title, "channel": channel,
-    #                   "air_date": air_date, "air_time": air_time, 
+    #                   "airdate": airdate, "airtime": airtime, 
     #                   "recording_length": recording_length,
     #                   "recording_type": recording_type,
     #                   "category": category, "description": description }
@@ -186,8 +188,8 @@ class ProgramList:
     
         description_list = [  ["Title", title],
                               ["Channel", channel],
-                              ["Airdate", air_date],
-                              ["Airtime", air_time],
+                              ["Airdate", airdate],
+                              ["Airtime", airtime],
                               ["Record Length", recording_length],
                               ["Record Type", recording_type],
                               ["Category", category],

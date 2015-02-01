@@ -4,7 +4,7 @@
 
 #NOTE in general, <string>.format() is the preferred method to format a string
 
-def feed(rss_model_dict):
+def feed(rss_channel_model_dict):
     """ Generate RSS 2.0 from a program_list model. """
     
     #PYTHON2 Print in UTF-8
@@ -15,12 +15,13 @@ def feed(rss_model_dict):
   <channel>
     <title>%(title)s</title>
     <link>%(link)s</link>
+    <description>%(description)s</description>
     <pubDate>%(pub_date)s</pubDate>
     <lastBuildDate>%(created_on)s</lastBuildDate>
-    <language>en</language>""" \
-        % rss_model_dict)
+    <language>%(language)s</language>""" \
+        % rss_channel_model_dict)
 
-    for rss_item_model_dict in rss_model_dict["entries"]:
+    for rss_item_model_dict in rss_channel_model_dict["entries"]:
         #print "      <description><![CDATA[%(description)s]]></description>"
 
         print("""    <item>""")
@@ -31,13 +32,14 @@ def feed(rss_model_dict):
             print("""      <link>%(link)s/%(guid)s</link>""" \
                   % rss_item_model_dict)
 
-        print("""      <title><![CDATA[%(title)s]]></title>
-      <description>
-        <![CDATA[""" \
-            % rss_item_model_dict)
+        if rss_item_model_dict["sub_title"] != "":
+            print("""      <title><![CDATA[%(title)s: %(sub_title)s]]></title>""" % rss_item_model_dict)
+        else:
+            print("""      <title><![CDATA[%(title)s]]></title>""" % rss_item_model_dict)
 
+        print("""      <description>
+        <![CDATA[""")
         description_dict = rss_item_model_dict["description"]
-
         print("         <table>")
         for entry in description_dict["program_description"]:
             #if c in string:whitespace for c in entry[0]:

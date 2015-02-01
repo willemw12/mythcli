@@ -2,7 +2,7 @@
 
 import sys
 import time
-import urllib.parse
+import urllib.request, urllib.error, urllib.parse
 
 from datetime import datetime
 from xml.etree.ElementTree import ElementTree
@@ -57,7 +57,7 @@ class ConflictingProgramList(program_list.ProgramList):
         try:
             tree.parse(urllib.request.urlopen(url))
         except urllib.error.URLError as exc:
-            sys.stderr.write("URL %s not known\n" % url)
+            sys.stderr.write("Unknown URL %s\n" % url)
             #sys.stderr.write("%s\n" % exc.reason)
             sys.exit(exc.reason.errno)
 
@@ -72,7 +72,7 @@ class ConflictingProgramList(program_list.ProgramList):
         starttime_dt = datetime.strptime(starttime, MYTHTV_SERVICES_DATETIME_FORMAT)
         recording_guid = channel_id + "-" + starttime_dt.strftime("%Y%m%d%H%M%S")
 
-        max_items = max(args.max_items[0], 0)
+        max_items = max(args.max_items, 0)
         descriptions_list = []
         programs = tree.findall("Programs/Program")
         if programs is not None:
